@@ -19,6 +19,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductImagesRepository imagesRepository;
+    private final FavouritesService favouritesService;
 
     public List<Product> listProducts() {
         return productRepository.findAll();
@@ -87,6 +88,7 @@ public class ProductService {
     public void saveProduct(Product product, User user, MultipartFile image) throws IOException {
         product.setUser(user);
         product.setDateOfCreation(new Date().toString());
+        product.setViews(0);
         product = productRepository.save(product);
         addImage(image, product);
     }
@@ -103,33 +105,37 @@ public class ProductService {
     }
 
     public void deleteProductById(Long productId, User user) {
-        /*productRepository.deleteById(productId);
-        userRepository.findById(user.getId()).orElse(null).getProductList().remove(productRepository.findById(productId));
-*/
+        favouritesService.removeProductFromFavourites(getProductById(productId));
         productRepository.deleteById(productId);
-
     }
 
     public void deleteProductById(Long productId) {
+        favouritesService.removeProductFromFavourites(getProductById(productId));
         productRepository.deleteById(productId);
     }
 
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+        Product product = productRepository.findById(id).orElse(null);
+        return product;
     }
 
-    public void changeProductActivity(Long id) {
-        Product product = getProductById(id);
-    }
 
     public void editProduct(Long id, Product updatedProduct) {
         Product productFromDb = getProductById(id);
-
         productFromDb.setTitle(updatedProduct.getTitle());
         productFromDb.setDescription(updatedProduct.getDescription());
         productFromDb.setPrice(updatedProduct.getPrice());
 
+
         productRepository.save(productFromDb);
 
+    }
+
+    public Product getProductById(Long id, User user) {
+        Product product = getProductById(id);
+        if (!product.getUser().equals(user))
+            product.setViews(product.getViews() + 1);
+        productRepository.save(product);
+        return product;
     }
 }

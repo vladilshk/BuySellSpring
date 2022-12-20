@@ -27,15 +27,18 @@
             <div class="card-body">
                 <h5 class="card-title">${product.title}</h5>
                 <p class="card-text">${product.description}</p>
+                <p class="card-text">${product.price}</p>
                 <br>
-                <p class="card-text">Объяение разместил: ${product.user.name}</p>
+                <p class="card-text">Объяение разместил: <a href="/user/${product.user.id}">${product.user.name}</a></p>
                 <p class="card-text">email: ${product.user.email}</p>
+                <p class="card-text">Телефон: ${product.user.number}</p>
                 <p class="card-text">Город: ${product.city}</p>
 
                 <br>
                 <br>
             </div>
             <br>
+            <p class="card-text"><small class="text-muted">Просмотры: ${product.views}</small></p><br>
             <div class="d-flex  justify-content-end ">
                 <p class="card-text" style="margin-top: 3px"><small class="text-muted">Размещено: ${product.dateOfCreation} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</small></p>
                 <form method="post" action="/favourites/add">

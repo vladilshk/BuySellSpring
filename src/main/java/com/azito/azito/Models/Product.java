@@ -7,6 +7,7 @@ import net.bytebuddy.dynamic.scaffold.MethodRegistry;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,12 +33,16 @@ public class Product {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "views")
+    private long views;
+
     @Column(name = "date")
     private String dateOfCreation;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
+
 
     /*@ManyToMany(*//*cascade = CascadeType.ALL,*//* fetch = FetchType.LAZY)
     private List<Favourites> favourites;*/

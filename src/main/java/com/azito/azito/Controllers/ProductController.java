@@ -3,6 +3,7 @@ package com.azito.azito.Controllers;
 import com.azito.azito.Models.Product;
 import com.azito.azito.Models.User;
 import com.azito.azito.Repository.ProductRepository;
+import com.azito.azito.Service.FavouritesService;
 import com.azito.azito.Service.ProductService;
 import com.azito.azito.Service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final UserService userService;
+    private final FavouritesService favouritesService;
     private final ProductRepository productRepository;
 
 
@@ -48,7 +50,8 @@ public class ProductController {
 
     @GetMapping("/product/{id}")
     public String getProductInfo(@PathVariable Long id, Model model, Principal principal){
-        model.addAttribute("product", productService.getProductById(id));
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("product", productService.getProductById(id, user));
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "product/product-info";
     }
@@ -56,9 +59,7 @@ public class ProductController {
     //I don't know why, but if I want to delete product from service, it doesn't do this
     @PostMapping("/product/delete")
     public String deleteProduct(@RequestParam("productId") Long productId, Principal principal){
-        /*if(productRepository.)*/
-        //productRepository.deleteById(productId);
-        productService.deleteProductById(productId, userService.getUserByPrincipal(principal));
+        productService.deleteProductById(productId);
         return "redirect:/my/products";
     }
 

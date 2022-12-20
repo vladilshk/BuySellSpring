@@ -3,9 +3,11 @@
 <h1 style="text-align: center">Registration page</h1>
 
 <form action="/registration" method="post">
-    Username: <input type="text" name="name"><br>
+    Имя пользователя: <input type="text" name="name"><br>
+    Номер телефона: <input type="number" name="number"><br>
     Email: <input type="email" name="email"><br>
-    Password: <input type="password" name="password"><br>
+    Пароль: <input type="password" name="password"><br>
+
     <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="registration">
 </form>

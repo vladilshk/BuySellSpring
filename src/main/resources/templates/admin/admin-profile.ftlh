@@ -1,7 +1,7 @@
 <#import "../template.ftlh" as t>
 <@t.template user>
 
-    <h1 style="text-align: center">Profile</h1><br>
+    <h1 style="text-align: center">Профиль админа</h1><br>
     <div class="row g-0" style="text-align: center">
         <div class="col-md-4">
             <h3>Адиминские фитчи</h3><br><br>

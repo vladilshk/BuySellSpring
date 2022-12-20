@@ -30,7 +30,8 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "active")
     private boolean active;
-
+    @Column(name = "nuber")
+    private long number;
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")

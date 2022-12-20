@@ -43,4 +43,14 @@ public class FavouritesService {
 
         favouritesRepository.save(favourites);
     }
+
+    public void removeProductFromFavourites(Product product) {
+        for(Favourites favourites : favouritesRepository.findAll()){
+            List<Product> productList = favourites.getProductList();
+            if (productList.contains(product))
+                productList.remove(product);
+            favourites.setProductList(productList);
+            favouritesRepository.save(favourites);
+        }
+    }
 }

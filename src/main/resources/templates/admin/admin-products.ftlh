@@ -31,8 +31,8 @@
                 <th>50</th>
                 <th>${product.city}</th>
                 <th>
-                    <form action="/product/delete" method="post">
-                        <input type="hidden" value="${product.id}" name="userId">
+                    <form action="/admin/product/delete" method="post">
+                        <input type="hidden" value="${product.id}" name="productId">
                         <input type="hidden" name="_csrf" value="${_csrf.token}">
                         <input class="btn btn-danger"  type="submit" value="удалить">
                     </form>

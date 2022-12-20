@@ -1,7 +1,7 @@
 <#import "../template.ftlh" as t>
 <@t.template user>
 
-    <h1 style="text-align: center">Profile</h1><br>
+    <h1 style="text-align: center">Профиль</h1><br>
 
     <div style="align-content: center; align-items: center">
         <img style="display: block;margin-left: auto; margin-right: auto" src="/static/images/spiderMan.png" alt="profilePhoto"  height="300"><br>
