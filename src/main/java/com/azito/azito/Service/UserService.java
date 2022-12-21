@@ -5,6 +5,7 @@ import com.azito.azito.Models.Product;
 import com.azito.azito.Models.User;
 import com.azito.azito.Repository.UserRepository;
 import com.azito.azito.Role;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,13 +18,13 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private final PasswordEncoder passwordEncoder;
+
+    private ProductService productService;
+    private PasswordEncoder passwordEncoder;
 
     public User getUserById(Long id) {
         userRepository.findById(id);
@@ -89,5 +90,24 @@ public class UserService {
         if (principal == null)
             return new User();
         return userRepository.findByEmail(principal.getName());
+    }
+
+    public void addFavouritesToUser(User user, Long productId){
+        Product product = productService.getProductById(productId);
+        if (product != null) {
+            user.getFavoritesProducts().add(product);
+            userRepository.save(user);
+        }
+    }
+    public void deleteFavouritesToUser(User user, Long  productId){
+        Product product = productService.getProductById(productId);
+        if (product != null) {
+            user.getFavoritesProducts().remove(product);
+            userRepository.save(user);
+        }
+    }
+
+    public List<Product> listUserFavourites(User user){
+        return user.getFavoritesProducts();
     }
 }

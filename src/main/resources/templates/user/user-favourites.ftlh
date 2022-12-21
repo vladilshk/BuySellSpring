@@ -1,7 +1,7 @@
 <#import "../template.ftlh" as t>
 <@t.template user>
 <h1 style="text-align: center">Favourites</h1><br>
-    <#list favourites.productList as product>
+    <#list products as product>
         <div class="row g-0 border">
             <div class="col-md-4">
                 <img class="card-img-top" src="/static/images/img.jpg" alt="Card image">

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -43,6 +45,10 @@ public class Product {
     @JoinColumn
     private User user;
 
+    //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "productList")
+
+    @ManyToMany(mappedBy = "favoritesProducts")
+    private List<User> favouriteUsers;
 
     /*@ManyToMany(*//*cascade = CascadeType.ALL,*//* fetch = FetchType.LAZY)
     private List<Favourites> favourites;*/
