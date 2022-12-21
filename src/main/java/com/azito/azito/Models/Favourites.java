@@ -15,9 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Favourites {
     @Id
-   /* @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;*/
 
     @Column(name = "user_id", unique = true)
     private Long userId;

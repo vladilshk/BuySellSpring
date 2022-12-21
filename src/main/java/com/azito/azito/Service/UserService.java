@@ -6,6 +6,7 @@ import com.azito.azito.Models.User;
 import com.azito.azito.Repository.UserRepository;
 import com.azito.azito.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
 
     public User getUserById(Long id) {
@@ -73,13 +75,12 @@ public class UserService {
     }
 
     public boolean saveUser(User user) {
-        System.out.println("hello ((((");
         if (userRepository.findByEmail(user.getEmail()) != null) return false;
         user.setActive(true);
-        System.out.println("salaaaam");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user = userRepository.save(user);
-        user.getRoles().add(Role.ROLE_ADMIN);
+        //user = userRepository.save(user);
+        user.setRoles(new HashSet<>());
+        user.getRoles().add(Role.ROLE_USER);
         userRepository.save(user);
         return true;
     }

@@ -2,7 +2,7 @@
 <@t.template user>
 
     <h1 style="text-align: center">Azito</h1>
-    <br>
+    <br/>
 
         <form action="/" method="get" id="searchForm">
             <div class="form-row">
@@ -44,7 +44,7 @@
             <h2>NO product</h2>
         </#list>
     </div>
-    <br>
-    <br>
+    <br/>
+    <br/>
 
 </@t.template>
