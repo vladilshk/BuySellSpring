@@ -3,6 +3,7 @@ package com.azito.azito.Service;
 
 import com.azito.azito.Models.Product;
 import com.azito.azito.Models.User;
+import com.azito.azito.Repository.ProductRepository;
 import com.azito.azito.Repository.UserRepository;
 import com.azito.azito.Role;
 import lombok.AllArgsConstructor;
@@ -21,10 +22,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private ProductService productService;
-    private PasswordEncoder passwordEncoder;
+    private final ProductService productService;
+    private final PasswordEncoder passwordEncoder;
 
     public User getUserById(Long id) {
         userRepository.findById(id);
@@ -94,7 +95,7 @@ public class UserService {
 
     public void addFavouritesToUser(User user, Long productId){
         Product product = productService.getProductById(productId);
-        if (product != null) {
+        if (product != null && !user.getFavoritesProducts().contains(product)) {
             user.getFavoritesProducts().add(product);
             userRepository.save(user);
         }
@@ -109,5 +110,30 @@ public class UserService {
 
     public List<Product> listUserFavourites(User user){
         return user.getFavoritesProducts();
+    }
+
+    public void deleteProductFromFavourites(Product product){
+        for (User user : userRepository.findAll()){
+            if(user.getFavoritesProducts().contains(product)) {
+                user.getFavoritesProducts().remove(product);
+                userRepository.save(user);
+            }
+            if (user.getProductList().contains(product)){
+                user.getProductList().remove(product);
+
+                System.out.println("1" + user.getProductList().size());
+                userRepository.save(user);
+                productService.deleteProductById(product.getId());
+                System.out.println("1" + user.getProductList().size());
+                for (Product product1 : user.getProductList()){
+                    System.out.println("1");
+                    System.out.println(product1.getTitle());
+                }
+            }
+        }
+    }
+
+    public List<Product> listUserProduct(Long id) {
+        return getUserById(id).getProductList();
     }
 }

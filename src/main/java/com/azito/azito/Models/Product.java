@@ -41,15 +41,16 @@ public class Product {
     @Column(name = "date")
     private String dateOfCreation;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @Column(name = "active")
+    private boolean active;
+
+    @ManyToOne()
     @JoinColumn
     private User user;
 
     //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "productList")
 
-    @ManyToMany(mappedBy = "favoritesProducts")
+    @ManyToMany(mappedBy = "favoritesProducts", cascade = CascadeType.REFRESH)
     private List<User> favouriteUsers;
 
-    /*@ManyToMany(*//*cascade = CascadeType.ALL,*//* fetch = FetchType.LAZY)
-    private List<Favourites> favourites;*/
 }

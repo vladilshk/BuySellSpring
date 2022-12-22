@@ -1,12 +1,12 @@
 <#import "../template.ftlh" as t>
 <@t.template user>
-<h1 style="text-align: center">Edit product</h1>
+<h1 style="text-align: center">Изменить продукт</h1>
 
 <form action="/product/edit/${product.id}" method="post">
-    Title: <input type="text" name="title"><br>
-    Description: <input type="text" name="description"><br>
-    Price: <input type="text" name="price"><br>
+    Заголовок: <input type="text" name="title"><br>
+    Описание: <input type="text" name="description"><br>
+    Цена: <input type="text" name="price" min="0" max="100000"><br>
     <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Save">
+    <input type="submit" value="Сохранить">
 </form>
 </@t.template>

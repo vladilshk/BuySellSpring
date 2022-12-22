@@ -8,10 +8,11 @@
     </div>
     <h3>Username: ${user.name}</h3>
     <h3>Email: ${user.email}</h3>
+    <h3>Телефон: ${user.number}</h3><br>
 
-    <a href="/favourites">Favourites</a>
-    <a href="/my/products">My products</a>
-    <a href="/product/add">Add product</a><br><br><br>
+    <a class="btn btn-primary" href="/favourites">Избранное</a><br>
+    <a class="btn btn-primary"  href="/my/products">Мои продукты</a><br>
+    <a class="btn btn-primary"  href="/product/add">Добавить продукт</a><br><br><br>
     <form method="post" action="/logout">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" class="btn btn-danger" value="Выйти">

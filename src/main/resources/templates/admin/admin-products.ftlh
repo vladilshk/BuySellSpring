@@ -1,6 +1,6 @@
 <#import "../template.ftlh" as t>
 <@t.template user>
-    <h1 style="text-align: center">Пользователи</h1>
+    <h1 style="text-align: center">Продукты</h1>
     <br>
 
     <form action="/admin/users" method="get" id="searchForm">
@@ -20,6 +20,7 @@
             <th>Автор</th>
             <th>Просмотры</th>
             <th>Город</th>
+            <th>Активно</th>
             <th>Удалить</th>
         </tr>
         <#list products as product>
@@ -28,8 +29,9 @@
                 <th><a href="/product/${product.id}">${product.title}</a></th>
                 <th>${product.price}</th>
                 <th><a href="/user/${product.user.id}">${product.user.name}</a></th>
-                <th>50</th>
+                <th>${product.views}</th>
                 <th>${product.city}</th>
+                <th><#if product.active>Активно<#else> Не активно</#if></th>
                 <th>
                     <form action="/admin/product/delete" method="post">
                         <input type="hidden" value="${product.id}" name="productId">

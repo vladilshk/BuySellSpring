@@ -4,29 +4,38 @@ import com.azito.azito.Models.ProductImage;
 import com.azito.azito.Models.User;
 import com.azito.azito.Repository.ProductImagesRepository;
 import com.azito.azito.Repository.ProductRepository;
+import com.azito.azito.Repository.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductImagesRepository imagesRepository;
-    private final FavouritesService favouritesService;
 
     public List<Product> listProducts() {
         return productRepository.findAll();
     }
 
     public List<Product> listProducts(String city, String searchWorld) {
-        List<Product> productList = productRepository.findAll();
+        List<Product> productList = new ArrayList<>();
+        for(Product product : productRepository.findAll()) {
+            if (product.isActive())
+                productList.add(product);
+        }
+
         if (searchWorld != null)
             searchWorld = searchWorld.toLowerCase();
         else if (city == null)
@@ -89,6 +98,7 @@ public class ProductService {
         product.setUser(user);
         product.setDateOfCreation(new Date().toString());
         product.setViews(0);
+        product.setActive(true);
         product = productRepository.save(product);
         addImage(image, product);
     }
@@ -105,18 +115,25 @@ public class ProductService {
     }
 
     public void deleteProductById(Long productId, User user) {
-        favouritesService.removeProductFromFavourites(getProductById(productId));
         productRepository.deleteById(productId);
     }
 
     public void deleteProductById(Long productId) {
-        favouritesService.removeProductFromFavourites(getProductById(productId));
         productRepository.deleteById(productId);
     }
 
+    private void makeScriptForDelete(Long productId) throws IOException {
+        FileWriter fileWriter = new FileWriter("deleteProduct.sql");
+        fileWriter.write("DELETE FROM products WHERE id = " + productId);
+        fileWriter.close();
+    }
+
+    private void deleteProductWithScript(Long productId){
+
+    }
+
     public Product getProductById(Long id) {
-        Product product = productRepository.findById(id).orElse(null);
-        return product;
+        return  productRepository.findById(id).orElse(null);
     }
 
 
@@ -133,9 +150,21 @@ public class ProductService {
 
     public Product getProductById(Long id, User user) {
         Product product = getProductById(id);
+        if (!product.isActive())
+            return null;
         if (!product.getUser().equals(user))
             product.setViews(product.getViews() + 1);
         productRepository.save(product);
         return product;
+    }
+
+    public void changeProductActivity(Long productId) {
+        Product product = getProductById(productId);
+        if (product.isActive()){
+            product.setActive(false);
+        }
+        else
+            product.setActive(true);
+        productRepository.save(product);
     }
 }

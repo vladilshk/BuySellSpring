@@ -19,8 +19,14 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/user/{id}")
-    public String getUserInfo(@PathVariable Long id, Model model){
+    public String getUserInfo(@PathVariable Long id, Model model, Principal principal){
+        if (userService.getUserByPrincipal(principal).getName() == null){
+            model.addAttribute("show", false);
+        } else {
+            model.addAttribute("show", true);
+        }
         model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("products", userService.listUserProduct(id));
         return "user/user-info";
     }
 

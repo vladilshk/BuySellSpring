@@ -1,6 +1,7 @@
 package com.azito.azito.Controllers;
 
 
+import com.azito.azito.Repository.ProductRepository;
 import com.azito.azito.Service.ProductService;
 import com.azito.azito.Service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +60,7 @@ public class AdminController {
 
     @PostMapping("/product/delete")
     public String deleteProduct(@RequestParam(name = "productId") Long productId){
-        productService.deleteProductById(productId);
+        userService.deleteProductFromFavourites(productService.getProductById(productId));
         return "redirect:/admin/products";
     }
 
